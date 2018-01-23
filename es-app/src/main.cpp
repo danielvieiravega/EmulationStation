@@ -18,12 +18,17 @@
 #include <SDL_events.h>
 #include <SDL_main.h>
 #include <SDL_timer.h>
+#include <chrono>
+#include <thread>
 #include <iostream>
+#include <string>
+#include <thread> 
 #ifdef WIN32
 #include <Windows.h>
 #endif
 
 #include <FreeImage.h>
+
 
 bool scrape_cmdline = false;
 
@@ -204,12 +209,23 @@ void onExit()
 	Log::close();
 }
 
+void mainTimer()
+{
+	int n=20;
+	std::cout << "U have " << n <<" seconds \n";
+	std::this_thread::sleep_for (std::chrono::seconds(n));
+	std::cout << "Ur time is over!!!!\n";
+}
+
 int main(int argc, char* argv[])
 {
 	srand((unsigned int)time(NULL));
 
 	std::locale::global(std::locale("C"));
 	boost::filesystem::path::imbue(std::locale());
+
+	std::thread first (mainTimer);  
+
 
 	if(!parseArgs(argc, argv))
 		return 0;
